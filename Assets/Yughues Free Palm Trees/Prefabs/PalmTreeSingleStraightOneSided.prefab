@@ -540,7 +540,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::HarvestUI
   fillImage: {fileID: 424218811385964914}
   messageText: {fileID: 6093491900453868836}
-  holdMessage: Hold button to harvest
+  holdMessage: Hold trigger to harvest
 --- !u!114 &7339686454731099829
 MonoBehaviour:
   m_ObjectHideFlags: 0

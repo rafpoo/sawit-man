@@ -83,7 +83,12 @@ public class HoldHarvestTree : MonoBehaviour
     {
         if (harvested || isHolding) return;
 
+        Debug.Log("Harvest started on: " + gameObject.name + ", HarvestUI assigned: " + (harvestUI != null));
+
         isHolding = true;
+        harvestUI.Show(true);
+        harvestUI.SetMessage(holdMessage);
+        harvestUI.SetProgress(0f);
         harvestRoutine = StartCoroutine(HoldProcess());
     }
 
@@ -98,6 +103,7 @@ public class HoldHarvestTree : MonoBehaviour
 
         harvestUI.SetProgress(0f);
         harvestUI.SetMessage(holdMessage);
+        harvestUI.Show(false);
         Debug.Log("Harvest Cancelled");
     }
 
