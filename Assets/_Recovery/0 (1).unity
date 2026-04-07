@@ -264,11 +264,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::XRHarvestInteractor
   controllerNode: 4
-  rayOrigin: {fileID: 582371918}
-  treeLayer:
-    serializedVersion: 2
-    m_Bits: 64
-  maxDistance: 10
 --- !u!135 &582371913
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -290,11 +285,6 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.1
   m_Center: {x: 0, y: 0, z: 0}
---- !u!4 &582371918 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 202364688, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
-  m_PrefabInstance: {fileID: 1070556657}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &832575517
 GameObject:
   m_ObjectHideFlags: 0
@@ -671,16 +661,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::XRHarvestInteractor
   controllerNode: 5
-  rayOrigin: {fileID: 1935521921}
-  treeLayer:
-    serializedVersion: 2
-    m_Bits: 64
-  maxDistance: 10
---- !u!4 &1935521921 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 1670256625, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
-  m_PrefabInstance: {fileID: 1070556657}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

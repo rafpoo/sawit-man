@@ -5,36 +5,48 @@ using System.Collections.Generic;
 public class XRHarvestInteractor : MonoBehaviour
 {
     public XRNode controllerNode;
+    public Transform rayOrigin;
+    public LayerMask treeLayer = ~0;
+    public float maxDistance = 10f;
 
     InputDevice device;
-    PalmFruitHarvestable currentFruit;
+    HoldHarvestTree currentTree;
 
     void Start()
     {
         device = InputDevices.GetDeviceAtXRNode(controllerNode);
+
+        if (rayOrigin == null)
+            rayOrigin = transform;
     }
 
     void Update()
     {
+        if (!device.isValid)
+            device = InputDevices.GetDeviceAtXRNode(controllerNode);
+
         device.TryGetFeatureValue(CommonUsages.triggerButton, out bool pressed);
+        UpdateTarget();
 
-        if (pressed && currentFruit != null)
+        if (currentTree != null)
         {
-            currentFruit.HoldHarvest(Time.deltaTime);
-        }
-        else if (currentFruit != null)
-        {
-            currentFruit.ResetHold();
+            if (pressed)
+                currentTree.StartHoldInput();
+            else
+                currentTree.StopHoldInput();
         }
     }
 
-    void OnTriggerEnter(Collider other)
+    void UpdateTarget()
     {
-        currentFruit = other.GetComponentInParent<PalmFruitHarvestable>();
-    }
-
-    void OnTriggerExit(Collider other)
-    {
-        currentFruit = null;
+        if (Physics.Raycast(rayOrigin.position, rayOrigin.forward, out RaycastHit hit, maxDistance, treeLayer))
+        {
+            currentTree = hit.collider.GetComponentInParent<HoldHarvestTree>();
+        }
+        else if (currentTree != null)
+        {
+            currentTree.StopHoldInput();
+            currentTree = null;
+        }
     }
 }
