@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 6459010}
   - component: {fileID: 9524274}
   - component: {fileID: 8455071312554469651}
+  - component: {fileID: 2406538031630157520}
   m_Layer: 0
   m_Name: PalmTreeSingleStraightOneSided
   m_TagString: Untagged
@@ -34,6 +35,7 @@ Transform:
   m_Children:
   - {fileID: 424276}
   - {fileID: 424278}
+  - {fileID: 5871704461828555363}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!64 &6459010
@@ -107,6 +109,20 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &2406538031630157520
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 124274}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82db999f9722c42419a1ff6979425d02, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PalmFruitSpawner
+  fruitPrefab: {fileID: 8545135220058107298, guid: 1a4394497eca32b42b625a76d7de6525, type: 3}
+  spawnPoint: {fileID: 5871704461828555363}
 --- !u!1 &124276
 GameObject:
   m_ObjectHideFlags: 0
@@ -311,3 +327,34 @@ CapsuleCollider:
   m_Height: 13.500001
   m_Direction: 1
   m_Center: {x: 0, y: 6.15, z: -0.0000037550926}
+--- !u!1 &5288642072019954193
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5871704461828555363}
+  m_Layer: 0
+  m_Name: FruitSpawnPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5871704461828555363
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5288642072019954193}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.193, y: 11.36, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 424274}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
