@@ -63,9 +63,20 @@ public class XRHarvestInteractor : MonoBehaviour
         if (Physics.Raycast(rayOrigin.position, rayOrigin.forward, out RaycastHit hit, maxDistance, treeLayer))
         {
             HoldHarvestTree tree = hit.collider.GetComponentInParent<HoldHarvestTree>();
-            if (tree != null && tree != currentTree)
+            if (tree != null)
             {
-                currentTree = tree;
+                if (tree.IsHarvested)
+                {
+                    if (currentTree == tree)
+                    {
+                        currentTree.StopHoldInput();
+                        currentTree = null;
+                    }
+                }
+                else if (tree != currentTree)
+                {
+                    currentTree = tree;
+                }
             }
         }
         else if (currentTree != null)

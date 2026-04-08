@@ -7,11 +7,15 @@ public class HoldHarvestTree : MonoBehaviour
 {
     [Header("Harvest Settings")]
     public float holdDuration = 3f;
+    public bool requireSpearToHarvest = true;
+    public string spearRequiredMessage = "Equip a spear to harvest";
 
     [Header("Spawn Settings")]
     public GameObject fruitPrefab;
     public Transform fruitSpawnPoint;
     public HarvestUI harvestUI;
+
+    private GameObject[] onTreeFruitObjects;
 
     private XRBaseInteractable interactable;
     private Coroutine harvestRoutine;
@@ -19,12 +23,23 @@ public class HoldHarvestTree : MonoBehaviour
     private bool isHolding = false;
     private bool harvested = false;
 
+    public bool IsHarvested => harvested;
+
     [Header("UI Settings")]
     public string holdMessage = "Hold trigger to harvest";
 
     private void Awake()
     {
         interactable = GetComponent<XRBaseInteractable>();
+
+        if (fruitSpawnPoint != null && fruitSpawnPoint.childCount > 0)
+        {
+            onTreeFruitObjects = new GameObject[fruitSpawnPoint.childCount];
+            for (int i = 0; i < fruitSpawnPoint.childCount; i++)
+            {
+                onTreeFruitObjects[i] = fruitSpawnPoint.GetChild(i).gameObject;
+            }
+        }
     }
 
     private void OnEnable()
@@ -41,7 +56,7 @@ public class HoldHarvestTree : MonoBehaviour
         if (harvested) return;
 
         harvestUI.Show(true);
-        harvestUI.SetMessage(holdMessage);
+        harvestUI.SetMessage(GetHarvestMessage());
         harvestUI.SetProgress(0f);
     }
 
@@ -82,6 +97,14 @@ public class HoldHarvestTree : MonoBehaviour
     private void BeginHold()
     {
         if (harvested || isHolding) return;
+
+        if (!CanHarvest())
+        {
+            harvestUI.Show(true);
+            harvestUI.SetMessage(spearRequiredMessage);
+            harvestUI.SetProgress(0f);
+            return;
+        }
 
         Debug.Log("Harvest started on: " + gameObject.name + ", HarvestUI assigned: " + (harvestUI != null));
 
@@ -130,6 +153,15 @@ public class HoldHarvestTree : MonoBehaviour
         harvested = true;
         isHolding = false;
 
+        if (onTreeFruitObjects != null)
+        {
+            foreach (var fruit in onTreeFruitObjects)
+            {
+                if (fruit != null)
+                    fruit.SetActive(false);
+            }
+        }
+
         Debug.Log("Fruit Spawned!");
 
         SpawnFruit();
@@ -148,12 +180,38 @@ public class HoldHarvestTree : MonoBehaviour
         Rigidbody rb = fruit.GetComponent<Rigidbody>();
         XRGrabInteractable grab = fruit.GetComponent<XRGrabInteractable>();
 
-        // aktifkan physics langsung
-        rb.isKinematic = false;
-        rb.useGravity = true;
+        if (rb != null)
+        {
+            rb.isKinematic = false;
+            rb.useGravity = true;
 
-        grab.enabled = true;
+            FruitStabilizer stabilizer = fruit.GetComponent<FruitStabilizer>();
+            if (stabilizer == null)
+                fruit.AddComponent<FruitStabilizer>();
+        }
+
+        if (grab != null)
+        {
+            grab.enabled = true;
+        }
+
+        var requireSpear = fruit.GetComponent<RequireSpearToGrab>();
+        if (requireSpear != null)
+        {
+            requireSpear.RefreshGrabState();
+        }
     }
 
+    private bool CanHarvest()
+    {
+        return !requireSpearToHarvest || PlayerEquipment.Instance == null || PlayerEquipment.Instance.HasSpearEquipped;
+    }
 
+    private string GetHarvestMessage()
+    {
+        if (requireSpearToHarvest && PlayerEquipment.Instance != null && !PlayerEquipment.Instance.HasSpearEquipped)
+            return spearRequiredMessage;
+
+        return holdMessage;
+    }
 }
