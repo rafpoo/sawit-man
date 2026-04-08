@@ -80,7 +80,7 @@ public class PlayerEquipment : MonoBehaviour
         {
             device.TryGetFeatureValue(UnityEngine.XR.CommonUsages.gripButton, out pressed);
         }
-        else if (Keyboard.current != null)
+        if (!pressed && Keyboard.current != null)
         {
             // Fallback to keyboard for testing in editor
             pressed = Keyboard.current[keyboardEquipFallbackKey].wasPressedThisFrame;

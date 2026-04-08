@@ -445,8 +445,9 @@ MonoBehaviour:
   equipControllerNode: 5
   equippedSpearScale: {x: 50, y: 50, z: 50}
   keyboardEquipFallbackKey: 20
+  keyboardGripOverrideKey: 21
   spearTipTransformName: FruitAttachPoint
-  useNegativeTipDirection: 1
+  spearTipAxis: 2
 --- !u!4 &1099662687
 Transform:
   m_ObjectHideFlags: 0

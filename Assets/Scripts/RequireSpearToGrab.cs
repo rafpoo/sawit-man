@@ -64,20 +64,27 @@ public class RequireSpearToGrab : MonoBehaviour
 
     public void RefreshGrabState()
     {
-        if (grabInteractable == null || isAttachedToSpear)
+        if (grabInteractable == null)
             return;
 
-        bool canGrab = PlayerEquipment.Instance != null && PlayerEquipment.Instance.HasSpearEquipped;
+        bool canGrab = isAttachedToSpear || (PlayerEquipment.Instance != null && PlayerEquipment.Instance.HasSpearEquipped);
         grabInteractable.enabled = canGrab;
     }
 
     private void OnSelectEntered(SelectEnterEventArgs args)
     {
+        if (isAttachedToSpear)
+        {
+            DetachFromSpear();
+            return;
+        }
+
         if (PlayerEquipment.Instance == null || !PlayerEquipment.Instance.HasSpearEquipped)
             return;
 
         selectingInteractor = args.interactorObject;
         AttachToSpear();
+        FruitPickupPopup.ShowMessage("Berhasil angkat sawit!");
     }
 
     private void OnSelectExited(SelectExitEventArgs args)
@@ -120,7 +127,7 @@ public class RequireSpearToGrab : MonoBehaviour
         if (fruitStabilizer != null)
             fruitStabilizer.enabled = false;
 
-        grabInteractable.enabled = false;
+        grabInteractable.enabled = true;
     }
 
     private void DetachFromSpear()

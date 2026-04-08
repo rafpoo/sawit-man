@@ -8,12 +8,14 @@ public class HoldHarvestTree : MonoBehaviour
     [Header("Harvest Settings")]
     public float holdDuration = 3f;
     public bool requireSpearToHarvest = true;
-    public string spearRequiredMessage = "Equip a spear to harvest";
+    public string spearRequiredMessage = "Press the grip button to equip a spear to harvest";
 
     [Header("Spawn Settings")]
     public GameObject fruitPrefab;
     public Transform fruitSpawnPoint;
     public HarvestUI harvestUI;
+    public Vector3 spawnLocalOffset = Vector3.zero;
+    public float releaseDelay = 0.1f;
 
     private GameObject[] onTreeFruitObjects;
 
@@ -171,23 +173,27 @@ public class HoldHarvestTree : MonoBehaviour
 
     void SpawnFruit()
     {
-        GameObject fruit = Instantiate(
-            fruitPrefab,
-            fruitSpawnPoint.position,
-            fruitSpawnPoint.rotation
-        );
+        GameObject fruit = Instantiate(fruitPrefab);
+        fruit.transform.SetParent(fruitSpawnPoint, false);
+        fruit.transform.localPosition = spawnLocalOffset;
+        fruit.transform.localRotation = Quaternion.identity;
+        fruit.transform.SetParent(null, true);
 
         Rigidbody rb = fruit.GetComponent<Rigidbody>();
         XRGrabInteractable grab = fruit.GetComponent<XRGrabInteractable>();
 
         if (rb != null)
         {
-            rb.isKinematic = false;
-            rb.useGravity = true;
+            rb.linearVelocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
+            rb.isKinematic = true;
+            rb.useGravity = false;
 
             FruitStabilizer stabilizer = fruit.GetComponent<FruitStabilizer>();
             if (stabilizer == null)
                 fruit.AddComponent<FruitStabilizer>();
+            else
+                stabilizer.enabled = true;
         }
 
         if (grab != null)
@@ -195,11 +201,29 @@ public class HoldHarvestTree : MonoBehaviour
             grab.enabled = true;
         }
 
+        if (fruit.GetComponent<PalmFruitCargo>() == null)
+            fruit.AddComponent<PalmFruitCargo>();
+
         var requireSpear = fruit.GetComponent<RequireSpearToGrab>();
         if (requireSpear != null)
         {
             requireSpear.RefreshGrabState();
         }
+
+        if (rb != null)
+            StartCoroutine(ReleaseFruit(rb));
+    }
+
+    private IEnumerator ReleaseFruit(Rigidbody rb)
+    {
+        if (releaseDelay > 0f)
+            yield return new WaitForSeconds(releaseDelay);
+
+        if (rb == null)
+            yield break;
+
+        rb.isKinematic = false;
+        rb.useGravity = true;
     }
 
     private bool CanHarvest()
