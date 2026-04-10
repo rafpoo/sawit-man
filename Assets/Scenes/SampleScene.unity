@@ -550,7 +550,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::XRTreeSpawner
   treePrefab: {fileID: 124274, guid: 20ddc844cd25b244f8005cba06955856, type: 3}
   terrain: {fileID: 1530604925}
-  treeCount: 1000
+  treeCount: 2000
 --- !u!4 &1230503476
 Transform:
   m_ObjectHideFlags: 0
