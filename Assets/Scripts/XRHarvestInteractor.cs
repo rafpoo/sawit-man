@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.XR;
+using UnityEngine.InputSystem;
 using System.Collections.Generic;
 
 public class XRHarvestInteractor : MonoBehaviour
@@ -9,7 +10,7 @@ public class XRHarvestInteractor : MonoBehaviour
     public LayerMask treeLayer = ~0;
     public float maxDistance = 10f;
 
-    InputDevice device;
+    UnityEngine.XR.InputDevice device;
     HoldHarvestTree currentTree;
 
     void Start()
@@ -25,23 +26,58 @@ public class XRHarvestInteractor : MonoBehaviour
         if (!device.isValid)
             device = InputDevices.GetDeviceAtXRNode(controllerNode);
 
-        device.TryGetFeatureValue(CommonUsages.triggerButton, out bool pressed);
+        // Try XR input first, fall back to mouse input for simulator testing
+        bool pressed = false;
+
+        if (device.isValid)
+        {
+            device.TryGetFeatureValue(UnityEngine.XR.CommonUsages.triggerButton, out pressed);
+        }
+        else
+        {
+            if (Mouse.current != null)
+            {
+                pressed = Mouse.current.leftButton.IsPressed();
+            }
+        }
+
         UpdateTarget();
 
         if (currentTree != null)
         {
             if (pressed)
+            {
                 currentTree.StartHoldInput();
+            }
             else
+            {
                 currentTree.StopHoldInput();
+            }
         }
     }
 
     void UpdateTarget()
     {
+        Debug.DrawRay(rayOrigin.position, rayOrigin.forward * maxDistance, Color.green);
+
         if (Physics.Raycast(rayOrigin.position, rayOrigin.forward, out RaycastHit hit, maxDistance, treeLayer))
         {
-            currentTree = hit.collider.GetComponentInParent<HoldHarvestTree>();
+            HoldHarvestTree tree = hit.collider.GetComponentInParent<HoldHarvestTree>();
+            if (tree != null)
+            {
+                if (tree.IsHarvested)
+                {
+                    if (currentTree == tree)
+                    {
+                        currentTree.StopHoldInput();
+                        currentTree = null;
+                    }
+                }
+                else if (tree != currentTree)
+                {
+                    currentTree = tree;
+                }
+            }
         }
         else if (currentTree != null)
         {

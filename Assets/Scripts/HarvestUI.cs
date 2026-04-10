@@ -27,12 +27,6 @@ public class HarvestUI : MonoBehaviour
 
     public void Show(bool state)
     {
-        if (messageText != null)
-            messageText.text = holdMessage;
-
-        if (fillImage != null)
-            fillImage.fillAmount = 0f;
-
         gameObject.SetActive(state);
     }
 }

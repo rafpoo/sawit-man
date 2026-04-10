@@ -119,6 +119,63 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1001 &389407932
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 856342341566233746, guid: 920df24453859544ba4e40847e2381fa, type: 3}
+      propertyPath: m_Name
+      value: IndustrialSmallTruck
+      objectReference: {fileID: 0}
+    - target: {fileID: 7127167872048207642, guid: 920df24453859544ba4e40847e2381fa, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 143.78516
+      objectReference: {fileID: 0}
+    - target: {fileID: 7127167872048207642, guid: 920df24453859544ba4e40847e2381fa, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.00479434
+      objectReference: {fileID: 0}
+    - target: {fileID: 7127167872048207642, guid: 920df24453859544ba4e40847e2381fa, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 86.78259
+      objectReference: {fileID: 0}
+    - target: {fileID: 7127167872048207642, guid: 920df24453859544ba4e40847e2381fa, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7127167872048207642, guid: 920df24453859544ba4e40847e2381fa, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7127167872048207642, guid: 920df24453859544ba4e40847e2381fa, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7127167872048207642, guid: 920df24453859544ba4e40847e2381fa, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7127167872048207642, guid: 920df24453859544ba4e40847e2381fa, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7127167872048207642, guid: 920df24453859544ba4e40847e2381fa, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7127167872048207642, guid: 920df24453859544ba4e40847e2381fa, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 920df24453859544ba4e40847e2381fa, type: 3}
 --- !u!1 &174410283 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1767192433, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
@@ -481,6 +538,58 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 1935521920}
   m_SourcePrefab: {fileID: 100100000, guid: f6336ac4ac8b4d34bc5072418cdc62a0, type: 3}
+--- !u!1 &1099662685
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1099662687}
+  - component: {fileID: 1099662686}
+  m_Layer: 0
+  m_Name: PlayerEquipment
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1099662686
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1099662685}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd2265cb450ef24468da0755ff4e37de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerEquipment
+  hasSpearEquipped: 0
+  spearPrefab: {fileID: 4477868724371459239, guid: b645ac563bdbe184e82100c79854b408, type: 3}
+  spearParentTransform: {fileID: 0}
+  equipControllerNode: 5
+  equippedSpearScale: {x: 50, y: 50, z: 50}
+  keyboardEquipFallbackKey: 20
+  spearTipTransformName: FruitAttachPoint
+  spearTipAxis: 2
+--- !u!4 &1099662687
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1099662685}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 165.74634, y: -0, z: 214.11343}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1230503474
 GameObject:
   m_ObjectHideFlags: 0
@@ -512,7 +621,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::XRTreeSpawner
   treePrefab: {fileID: 124274, guid: 20ddc844cd25b244f8005cba06955856, type: 3}
   terrain: {fileID: 1530604925}
-  treeCount: 500
+  treeCount: 2000
 --- !u!4 &1230503476
 Transform:
   m_ObjectHideFlags: 0
@@ -590,6 +699,10 @@ PrefabInstance:
     - target: {fileID: 6598815579406187037, guid: 18ddb545287c546e19cc77dc9fbb2189, type: 3}
       propertyPath: m_Name
       value: XR Device Simulator
+      objectReference: {fileID: 0}
+    - target: {fileID: 6598815579406187037, guid: 18ddb545287c546e19cc77dc9fbb2189, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1192,3 +1305,5 @@ SceneRoots:
   - {fileID: 1530604926}
   - {fileID: 1230503476}
   - {fileID: 1333201264}
+  - {fileID: 1099662687}
+  - {fileID: 389407932}
