@@ -14,12 +14,15 @@ public class PalmFruitSpawner : MonoBehaviour
     {
         if (fruitPrefab != null && spawnPoint != null)
         {
-            Instantiate(
+            GameObject fruit = Instantiate(
                 fruitPrefab,
                 spawnPoint.position,
                 spawnPoint.rotation,
                 spawnPoint
             );
+
+            if (fruit.GetComponent<PalmFruitCargo>() == null)
+                fruit.AddComponent<PalmFruitCargo>();
         }
     }
 }
