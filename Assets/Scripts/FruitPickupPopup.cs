@@ -11,8 +11,10 @@ public class FruitPickupPopup : MonoBehaviour
     public Text messageText;
     public float displayDuration = 1.5f;
     public Vector3 localOffset = new Vector3(0f, -0.25f, 1.5f);
+    public Vector2 canvasSize = new Vector2(720f, 220f);
 
     private Coroutine activeRoutine;
+    private float currentDisplayDuration;
 
     void Awake()
     {
@@ -37,12 +39,27 @@ public class FruitPickupPopup : MonoBehaviour
         Instance.Show(message);
     }
 
+    public static void ShowMessage(string message, float duration)
+    {
+        if (Instance == null)
+            CreateRuntimeInstance();
+
+        Instance.Show(message, duration);
+    }
+
     public void Show(string message)
+    {
+        Show(message, displayDuration);
+    }
+
+    public void Show(string message, float duration)
     {
         EnsureUiExists();
 
         if (messageText != null)
             messageText.text = message;
+
+        currentDisplayDuration = duration;
 
         if (activeRoutine != null)
             StopCoroutine(activeRoutine);
@@ -53,7 +70,7 @@ public class FruitPickupPopup : MonoBehaviour
     private IEnumerator ShowRoutine()
     {
         SetVisible(true);
-        yield return new WaitForSeconds(displayDuration);
+        yield return new WaitForSeconds(currentDisplayDuration);
         SetVisible(false);
     }
 
@@ -75,7 +92,7 @@ public class FruitPickupPopup : MonoBehaviour
         canvasRoot.AddComponent<GraphicRaycaster>();
 
         RectTransform canvasRect = canvasRoot.GetComponent<RectTransform>();
-        canvasRect.sizeDelta = new Vector2(400f, 120f);
+        canvasRect.sizeDelta = canvasSize;
 
         if (cam != null)
         {
@@ -100,7 +117,9 @@ public class FruitPickupPopup : MonoBehaviour
         messageText = textObject.AddComponent<Text>();
         messageText.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
         messageText.alignment = TextAnchor.MiddleCenter;
-        messageText.fontSize = 36;
+        messageText.fontSize = 28;
+        messageText.horizontalOverflow = HorizontalWrapMode.Wrap;
+        messageText.verticalOverflow = VerticalWrapMode.Overflow;
         messageText.color = Color.white;
         RectTransform textRect = textObject.GetComponent<RectTransform>();
         textRect.anchorMin = new Vector2(0f, 0f);

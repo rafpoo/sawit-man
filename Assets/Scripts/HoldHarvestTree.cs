@@ -167,6 +167,12 @@ public class HoldHarvestTree : MonoBehaviour
         Debug.Log("Fruit Spawned!");
 
         SpawnFruit();
+        FruitPickupPopup.ShowMessage(
+            "Panen berhasil!\n" +
+            "Tusuk buah dengan ujung spear.\n" +
+            "Ambil buah dari spear dengan tangan lain.\n" +
+            "Lempar buah ke bak truck.",
+            5f);
         harvestUI.Show(false);
         interactable.enabled = false;
     }

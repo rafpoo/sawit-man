@@ -10,6 +10,10 @@ public class RequireSpearToGrab : MonoBehaviour
     [SerializeField]
     private bool dropFruitWhenSpearUnequipped = true;
     [SerializeField]
+    private float maxAttachDistance = 0.2f;
+    [SerializeField]
+    private float reattachCooldown = 0.2f;
+    [SerializeField]
     private Vector3 stabbedLocalPositionOffset = Vector3.zero;
     [SerializeField]
     private Vector3 stabbedLocalRotationOffset = Vector3.zero;
@@ -19,12 +23,20 @@ public class RequireSpearToGrab : MonoBehaviour
     private FruitStabilizer fruitStabilizer;
     private IXRSelectInteractor selectingInteractor;
     private bool isAttachedToSpear;
+    private float nextAllowedAttachTime;
+    private bool attachBlockedUntilRelease;
 
     void Awake()
     {
         grabInteractable = GetComponent<XRGrabInteractable>();
         rb = GetComponent<Rigidbody>();
         fruitStabilizer = GetComponent<FruitStabilizer>();
+    }
+
+    void Update()
+    {
+        if (isAttachedToSpear && grabInteractable != null && grabInteractable.isSelected)
+            DetachFromSpear(true);
     }
 
     void OnEnable()
@@ -57,7 +69,7 @@ public class RequireSpearToGrab : MonoBehaviour
     void OnSpearEquippedChanged(bool equipped)
     {
         if (!equipped && isAttachedToSpear && dropFruitWhenSpearUnequipped)
-            DetachFromSpear();
+            DetachFromSpear(false);
 
         RefreshGrabState();
     }
@@ -75,11 +87,21 @@ public class RequireSpearToGrab : MonoBehaviour
     {
         if (isAttachedToSpear)
         {
-            DetachFromSpear();
+            DetachFromSpear(true);
             return;
         }
 
+        if (attachBlockedUntilRelease)
+            return;
+
+        if (Time.time < nextAllowedAttachTime)
+            return;
+
         if (PlayerEquipment.Instance == null || !PlayerEquipment.Instance.HasSpearEquipped)
+            return;
+
+        Transform attachPoint = PlayerEquipment.Instance.GetFruitAttachPoint();
+        if (attachPoint == null || Vector3.Distance(transform.position, attachPoint.position) > maxAttachDistance)
             return;
 
         selectingInteractor = args.interactorObject;
@@ -89,10 +111,12 @@ public class RequireSpearToGrab : MonoBehaviour
 
     private void OnSelectExited(SelectExitEventArgs args)
     {
+        attachBlockedUntilRelease = false;
+
         if (!isAttachedToSpear)
             return;
 
-        DetachFromSpear();
+        DetachFromSpear(false);
     }
 
     private void AttachToSpear()
@@ -130,10 +154,13 @@ public class RequireSpearToGrab : MonoBehaviour
         grabInteractable.enabled = true;
     }
 
-    private void DetachFromSpear()
+    private void DetachFromSpear(bool startedByHandGrab)
     {
         isAttachedToSpear = false;
         transform.SetParent(null, true);
+        attachBlockedUntilRelease = startedByHandGrab;
+        nextAllowedAttachTime = startedByHandGrab ? Time.time + reattachCooldown : Time.time;
+        selectingInteractor = null;
 
         if (rb != null)
         {
